@@ -20,7 +20,9 @@ GET /_search
     "function_score": {
       "query": { "match_all": {} },
       "boost": "5",
-      "random_score": {}, <1>
+      "functions": {
+        "random_score": {}, <1>
+      },
       "boost_mode": "multiply"
     }
   }
@@ -146,9 +148,11 @@ GET /_search
       "query": {
         "match": { "message": "elasticsearch" }
       },
-      "script_score": {
-        "script": {
-          "source": "Math.log(2 + doc['my-int'].value)"
+      "functions": {
+        "script_score": {
+          "script": {
+            "source": "Math.log(2 + doc['my-int'].value)"
+          }
         }
       }
     }
@@ -179,13 +183,15 @@ GET /_search
       "query": {
         "match": { "message": "elasticsearch" }
       },
-      "script_score": {
-        "script": {
-          "params": {
-            "a": 5,
-            "b": 1.2
-          },
-          "source": "params.a / Math.pow(params.b, doc['my-int'].value)"
+      "functions": {
+        "script_score": {
+          "script": {
+            "params": {
+              "a": 5,
+              "b": 1.2
+            },
+            "source": "params.a / Math.pow(params.b, doc['my-int'].value)"
+          }
         }
       }
     }
@@ -223,9 +229,11 @@ GET /_search
 {
   "query": {
     "function_score": {
-      "random_score": {
-        "seed": 10,
-        "field": "_seq_no"
+      "functions": {
+        "random_score": {
+          "seed": 10,
+          "field": "_seq_no"
+        }
       }
     }
   }
@@ -245,11 +253,13 @@ GET /_search
 {
   "query": {
     "function_score": {
-      "field_value_factor": {
-        "field": "my-int",
-        "factor": 1.2,
-        "modifier": "sqrt",
-        "missing": 1
+      "functions": {
+        "field_value_factor": {
+          "field": "my-int",
+          "factor": 1.2,
+          "modifier": "sqrt",
+          "missing": 1
+        }
       }
     }
   }
@@ -328,12 +338,14 @@ GET /_search
 {
   "query": {
     "function_score": {
-      "gauss": {
-        "@timestamp": {
-          "origin": "2013-09-17", <1>
-          "scale": "10d",
-          "offset": "5d",         <2>
-          "decay": 0.5            <2>
+      "functions": {
+        "gauss": {
+          "@timestamp": {
+            "origin": "2013-09-17", <1>
+            "scale": "10d",
+            "offset": "5d",         <2>
+            "decay": 0.5            <2>
+          }
         }
       }
     }
